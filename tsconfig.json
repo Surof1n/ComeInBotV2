@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "outDir": "build/",
+    "noImplicitAny": true,
+    "pretty": false,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
+    "emitDecoratorMetadata": true,
+    "target": "ESNext",
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "watch": true,
+    "baseUrl": ".",
+    "paths": {
+
+    }
+  },
+  "include": ["src", "*/*", "*/*/*", "*/*.*", "*/*/*.*"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
+}
