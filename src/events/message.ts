@@ -1,6 +1,6 @@
 import { Listener } from "discord-akairo";
 import { Message } from "discord.js";
-import { messages, triggers } from "../resource/";
+import { triggers } from "../resource/";
 
 export default class MessageEvent extends Listener {
   private checkTriggers(msg: string) {
@@ -28,11 +28,10 @@ export default class MessageEvent extends Listener {
   }
 
   async exec(message: Message) {
-    const { member, channel} = message;
+    const { member, channel, guild } = message;
+    if (!member || !channel || !guild) return;
     if (member.user.bot) return;
-
     const checkedTrigger = this.checkTriggers(message.content);
-
     if (checkedTrigger) {
       channel.send(this.botMessage(checkedTrigger));
     }
