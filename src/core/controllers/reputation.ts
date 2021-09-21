@@ -14,7 +14,7 @@ export class ReputationController extends BaseController {
   async send(receiver: GuildMember) {
     const transfers = await TransferEntity.find({
       where: {
-        id: this.member.id,
+        memberID: this.member.id,
         receiverID: receiver.id,
         guildID: receiver.guild.id,
         type: "reputation",
