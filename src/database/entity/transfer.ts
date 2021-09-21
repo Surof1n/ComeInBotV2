@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   Entity,
   PrimaryColumn,
+  PrimaryGeneratedColumn,
 } from "typeorm";
 
 const transferEnum = ["spark", "penta", "reputation"] as const;
@@ -19,14 +20,17 @@ export class TransferEntity extends BaseEntity {
     count: number
   ) {
     super();
-    this.id = memberID;
+    this.memberID = memberID;
     this.receiverID = reciverID;
     this.guildID = guildID;
     this.type = type;
     this.count = count;
   }
-  @PrimaryColumn("char", { length: 18 })
-  id: string;
+  @PrimaryGeneratedColumn()
+  id!: number;
+
+  @Column("char", { length: 18 })
+  memberID: string;
 
   @Column("char", { length: 18 })
   receiverID: string;
