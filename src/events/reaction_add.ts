@@ -24,7 +24,7 @@ export default class ReactionAddEvent extends Listener {
       matchEmoji === guild.reputation.emoji
     ) {
       const finallyMessage = await message.channel.send(
-        CiEmbed.error("Ошибка!", "", `Вы не можете подарить теплоту себе!`)
+        CiEmbed.error("Ошибочка!", "", `Вы не можете подарить теплоту себе!`)
       );
       await finallyMessage.delete({ timeout: 5000 });
       await reaction.remove();
@@ -32,14 +32,14 @@ export default class ReactionAddEvent extends Listener {
     }
     if (matchEmoji === guild.reputation.emoji && !message.author.bot) {
       const infoEmbed = {
-        title: `${memberReaction.displayName} дарит теплоту ${member.displayName}`,
+        title: `${memberReaction.displayName} дарит теплоту ${member.displayName}.`,
         randomText: messages.rep_given?.randomitem(),
       };
       try {
         await memberReaction.reputationController.send(member);
         await message.channel.send(
           CiEmbed.infoOrange(
-            "Уведомление!",
+            "Ух ты!",
             infoEmbed.title,
             infoEmbed.randomText.text,
             infoEmbed.randomText.author
