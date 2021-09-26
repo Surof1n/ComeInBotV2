@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "declaration": true,
     "outDir": "build/",
     "noImplicitAny": true,
     "pretty": false,
@@ -12,7 +11,7 @@
     "emitDecoratorMetadata": true,
     "target": "ESNext",
     "experimentalDecorators": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "watch": true,
     "baseUrl": ".",
     "alwaysStrict": true,
