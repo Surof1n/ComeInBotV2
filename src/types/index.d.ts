@@ -6,6 +6,7 @@ import { Guild } from "discord.js";
 declare module "discord.js" {
   interface GuildMember {
     reputationController: ReputationController;
+    about: string;
   }
   interface Guild {
     reputation: typeof GuildReputationSettings;
@@ -21,13 +22,11 @@ declare global {
   }
 }
 
-declare module 'discord-akairo' {
-
+declare module "discord-akairo" {
   interface ArgumentOptions {
     name: string;
   }
 }
-
 
 export interface CiCommandOptions extends CommandOptions {
   aliases: string[];
@@ -42,5 +41,4 @@ export interface CiDescription {
   initExamples(guild: Guild, prefix: string): string[];
 }
 
-
-export type TimeOutTypes = 'hour' | 'day' | 'isoWeek' | 'month' | 'year';
+export type TimeOutTypes = "hour" | "day" | "isoWeek" | "month" | "year";

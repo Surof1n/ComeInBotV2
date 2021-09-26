@@ -1,7 +1,12 @@
-import { createCanvas, loadImage, registerFont } from "canvas";
+import {
+  createCanvas,
+  loadImage,
+  NodeCanvasRenderingContext2D,
+  registerFont,
+} from "canvas";
 import { GuildMember, MessageAttachment } from "discord.js";
 import * as moment from "moment";
-import { CardSettings } from "@res";
+import { CardSettings, CiOptions } from "@res";
 
 export class CiCardsProfile {
   static async createDefaultCard(
@@ -106,9 +111,15 @@ export class CiCardsProfile {
     );
     // Draw About Me
     ctx.font = "22px Academy";
+
     ctx.fillText(
-      wrap("-", 31),
-      CardSettings.POSITIONS.userInfo.x,
+      wrap(
+        ctx,
+        member.about
+          ? member.about
+          : `Используй ${CiOptions.prefix}about для заполнения информации о себе.`
+      ),
+      CardSettings.POSITIONS.userInfo.x - 10,
       CardSettings.POSITIONS.userInfo.y + 22
     );
     // ---
@@ -159,35 +170,19 @@ export class CiCardsProfile {
   }
 }
 
-function wrap(str: string, maxWidth: number) {
-  const newLineStr = "\n";
-  let done = false,
-    res = "";
-  do {
-    let found = false;
-    // Inserts new line at first whitespace of the line
-    for (let i = maxWidth - 1; i >= 0; i--) {
-      if (testWhite(str.charAt(i))) {
-        res = res + [str.slice(0, i), newLineStr].join("");
-        str = str.slice(i + 1);
-        console.log(res, str);
-        found = true;
-        break;
-      }
+function wrap(ctx: NodeCanvasRenderingContext2D, str: string) {
+  let words = str.split("");
+  let line = "";
+  let result: string[] = [];
+  if (!str) return "";
+  words.forEach((symb, index) => {
+    if (ctx.measureText(line + symb).width < 340) {
+      line += symb;
+      if (index + 1 === words.length) result.push(line);
+    } else {
+      result.push(line);
+      line = symb === " " ? "" : symb;
     }
-    // Inserts new line at maxWidth position, the word is too long to wrap
-    if (!found) {
-      res += [str.slice(0, maxWidth), newLineStr].join("");
-      str = str.slice(maxWidth);
-    }
-
-    if (str.length < maxWidth) done = true;
-  } while (!done);
-
-  return res + str;
-}
-
-function testWhite(x: string) {
-  const white = new RegExp(/^\s$/);
-  return white.test(x.charAt(0));
+  });
+  return result.join("\n");
 }

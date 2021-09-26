@@ -1,4 +1,12 @@
-import "module-alias/register";
+import * as moduleAlias from "module-alias";
+
+moduleAlias.addAliases({
+  "@root": __dirname,
+  "@core": __dirname + `/core`,
+  "@db": __dirname + `/database`,
+  "@res":  __dirname + `/resource`,
+  "@types": __dirname + `/types`,
+});
 
 import { CiClient, CiGuild, CiGuildMember } from "@core";
 import { createConnection } from "typeorm";

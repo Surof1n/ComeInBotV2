@@ -10,4 +10,7 @@ export class GuildMemberEntity extends BaseEntity {
 
   @Column("int", { default: 0 })
   reputationCount!: number;
+
+  @Column("text", { default: "" })
+  about!: string;
 }

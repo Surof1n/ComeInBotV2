@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "module": "commonjs",
+    "declaration": true,
     "outDir": "build/",
     "noImplicitAny": true,
     "pretty": false,
@@ -36,9 +37,9 @@
       "@core": ["src/core"],
       "@db": ["src/database"],
       "@res": ["src/resource"],
-      "@types": ["src/types"],
+      "@types": ["src/types"]
     }
   },
   "include": ["src", "*/*", "*/*/*", "*/*.*", "*/*/*.*"],
-  "exclude": ["node_modules", "**/*.spec.ts"]
+  "exclude": ["node_modules", "**/*.spec.ts", "./build"]
 }

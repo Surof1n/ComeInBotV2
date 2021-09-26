@@ -1,10 +1,13 @@
 import { ReputationController } from "@core";
 import { AkairoClient } from "discord-akairo";
 import { Guild, GuildMember } from "discord.js";
-import { GuildMemberEntity } from "../../database";
+import { GuildMemberEntity } from "@db";
 
 export class CiGuildMember extends GuildMember {
   reputation!: ReputationController;
+
+  about!: string;
+
   constructor(client: AkairoClient, data: object, guild: Guild) {
     super(client, data, guild);
     this.initData();
@@ -17,12 +20,15 @@ export class CiGuildMember extends GuildMember {
       dataMember.id = this.id;
       dataMember.guildID = this.guild.id;
       dataMember.reputationCount = 0;
-      dataMember.save();
+      dataMember.about = "";
+      await dataMember.save();
     }
 
     this.reputationController = new ReputationController(
       this,
       dataMember.reputationCount
     );
+
+    this.about = dataMember.about;
   }
 }

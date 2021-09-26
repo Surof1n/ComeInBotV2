@@ -5,3 +5,11 @@ export class DatabaseConnectError extends Error  {
     super(message)
   }
 }
+
+export class DatabaseFindEntityError extends Error  {
+  constructor(
+    public message: string,
+  ) {
+    super(message)
+  }
+}
