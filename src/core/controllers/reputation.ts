@@ -4,12 +4,12 @@ import { GuildMember } from "discord.js";
 import * as moment from "moment";
 import { BaseController } from ".";
 
-export class ReputationController extends BaseController {
+export class ReputationController implements BaseController {
+  member: GuildMember;
+  count: number;
   constructor(member: GuildMember, count: number) {
-    super(member, count);
-  }
-  add(): void {
-    throw new Error("Method not implemented.");
+    this.member = member;
+    this.count = count;
   }
   async send(receiver: GuildMember) {
     const transfers = await TransferEntity.find({
@@ -45,9 +45,7 @@ export class ReputationController extends BaseController {
     await dataTranfer.save();
     return;
   }
-  remove(): void {
-    throw new Error("Method not implemented.");
-  }
+
   public mouthUpdate() {
     this.count = 0;
     GuildMemberEntity.update(

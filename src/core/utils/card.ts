@@ -69,7 +69,7 @@ export class CiCardsProfile {
     // Draw stats
     ctx.font = '26px "Caveat"';
     ctx.fillText(
-      "-",
+      member.messagesCount.toString(),
       CardSettings.POSITIONS.stats.messages.x,
       CardSettings.POSITIONS.stats.messages.y + 26
     );
@@ -86,9 +86,9 @@ export class CiCardsProfile {
     // Draw data economy
     ctx.fillStyle = "#000000";
     ctx.fillText(
-      "-",
+      member.sparkController.count.toString(),
       CardSettings.POSITIONS.wallet.sparks.x -
-        Math.floor(ctx.measureText("-").width / 2) +
+        Math.floor(ctx.measureText(member.sparkController.count.toString()).width / 2) +
         2,
       CardSettings.POSITIONS.wallet.sparks.y + 26
     );
@@ -126,9 +126,9 @@ export class CiCardsProfile {
     ctx.font = '26px "Caveat"';
     ctx.fillStyle = "#ffffff";
     ctx.fillText(
-      "-",
+      member.sparkController.count.toString(),
       CardSettings.POSITIONS.wallet.sparks.x -
-        Math.floor(ctx.measureText("-").width / 2),
+        Math.floor(ctx.measureText(member.sparkController.count.toString()).width / 2),
       CardSettings.POSITIONS.wallet.sparks.y + 26
     );
     ctx.fillText(

@@ -1,16 +1,21 @@
 import { CiClient, CiTimeout } from "@core";
 import { GuildEntity } from "@db";
-import { GuildReputationSettings } from "@res";
+import {
+  CiOptions,
+  GuildChannelsSettings,
+  GuildReputationSettings,
+} from "@res";
 import { Guild } from "discord.js";
-
 
 export class CiGuild extends Guild {
   reputation!: typeof GuildReputationSettings;
-  time: CiTimeout
+  channelsOptions!: typeof GuildChannelsSettings;
+  time: CiTimeout;
+  prefix = CiOptions.prefix;
   constructor(client: CiClient, data: object) {
     super(client, data);
     this.initData();
-    this.time = new CiTimeout(this)
+    this.time = new CiTimeout(this);
   }
 
   private async initData() {
@@ -20,9 +25,11 @@ export class CiGuild extends Guild {
       dataGuild = new GuildEntity();
       dataGuild.id = this.id;
       dataGuild.reputation = GuildReputationSettings;
+      dataGuild.channels = GuildChannelsSettings;
       dataGuild.save();
     }
 
     this.reputation = dataGuild.reputation;
+    this.channelsOptions = dataGuild.channels;
   }
 }

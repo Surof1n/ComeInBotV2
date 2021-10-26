@@ -1,11 +1,14 @@
-
 export const CiOptions = {
   token: process.env["TOKEN"],
-  prefix: process.env["PREFIX"],
+  prefix: process.env["PREFIX"] || ".",
 };
 
 export const GuildReputationSettings = {
   emoji: "🏆",
+};
+
+export const GuildChannelsSettings = {
+  commandChannel: "",
 };
 
 export enum Icons {
@@ -23,7 +26,7 @@ export enum Icons {
   infoOrange = "https://i.ibb.co/74yvsqC/Pics-Art-09-19-08-26-44.png",
 }
 
-export const TimeOutSet = new Set(['hour', 'day', 'isoWeek', 'month', 'year']);
+export const TimeOutSet = new Set(["hour", "day", "isoWeek", "month", "year"]);
 
 export enum Colors {
   Brand = 0xff8c1a,
@@ -33,7 +36,7 @@ export enum Colors {
   Yellow = 0xfaa61a,
   Green = 0x43b581,
   Invise = 0x36393f,
-  Orange = 0xff572e
+  Orange = 0xff572e,
 }
 
 export const CardSettings = {
@@ -56,5 +59,5 @@ export const CardSettings = {
       days: { x: 183, y: 395 },
     },
   },
-  COLORS: { black: '#fff', white: '#000' },
+  COLORS: { black: "#fff", white: "#000" },
 };

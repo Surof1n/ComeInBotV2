@@ -30,10 +30,13 @@ export default class MessageEvent extends Listener {
   async exec(message: Message) {
     const { member, channel, guild } = message;
     if (!member || !channel || !guild) return;
+    if (message.content.includes(guild.prefix)) return;
     if (member.user.bot) return;
     const checkedTrigger = this.checkTriggers(message.content);
     if (checkedTrigger) {
       channel.send(this.botMessage(checkedTrigger));
     }
+    member.messagesCount += 1;
+    member.sparkController.add(1);
   }
 }

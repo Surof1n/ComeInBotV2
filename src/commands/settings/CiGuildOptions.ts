@@ -1,7 +1,7 @@
 import { CiCommand, CiEmbed } from "@core";
-import { GuildEntity } from "@db";
 import { Guild } from "discord.js";
 import { Message } from "discord.js";
+import * as Controllers from "./controllers";
 
 export default class GuildOptionsCommand extends CiCommand {
   constructor() {
@@ -10,13 +10,13 @@ export default class GuildOptionsCommand extends CiCommand {
       aliases: ["настройгильдию", "настроитьгильдию"],
       category: "settings",
       description: "Поправь или добавь настройки гильдии",
-      userPermissions: ['ADMINISTRATOR'], 
+      userPermissions: ["ADMINISTRATOR"],
       cidescription: {
         header: "",
         commandForm: "",
         rules: "",
         initExamples(_guild: Guild, prefix: string) {
-          return [`${prefix}guildoptions list`];
+          return [`${prefix}guildoptions`];
         },
       },
       args: [
@@ -25,63 +25,56 @@ export default class GuildOptionsCommand extends CiCommand {
           id: "typeSettings",
           type: "string",
           name: "тип",
+          default: "",
         },
         {
           index: 1,
           id: "valueSettings",
           type: "string",
+          match: "content",
           name: "значение",
-          default: "settings",
+          default: "",
         },
       ],
     });
   }
 
   async exec(
-    { member, channel, guild }: Message,
+    message: Message,
     {
       typeSettings,
       valueSettings,
     }: { typeSettings: string; valueSettings: string }
   ): Promise<void> {
+    const { member, channel, guild } = message;
     if (!guild || !member) return;
-    // const newChannel = valueSettings
-    //   ? guild.channels.cache.get(valueSettings)
-    //   : null;
-    // const newRole = valueSettings ? guild.roles.cache.get(valueSettings) : null;
-    // const listOptions = ["emojiReputation"];
-    switch (typeSettings) {
-      case "emojiReputation":
-        const emoji = valueSettings.emojimatcher();
-        if (!emoji) {
-          channel.send(
-            CiEmbed.error(
-              `Параметр ${typeSettings} не обновлён!`,
-              "",
-              `Значение параметра у гильдии осталось тем же: ${guild.reputation.emoji.emojicomplete()}`
-            )
-          );
-          return;
-        }
-        guild.reputation.emoji = emoji;
-        GuildEntity.update({ id: guild.id }, { reputation: guild.reputation });
-        channel.send(
-          CiEmbed.info(
-            `Обновление параметра ${typeSettings}`,
-            "",
-            `Значение параметра у гильдии измененно: ${valueSettings}`
-          )
-        );
-        return;
-      default:
-        channel.send(
-          CiEmbed.error(
-            `Параметр не найден!`,
-            "",
-            `Значения параметров у гильдии не изменены.`
-          )
-        );
-        return;
+    if (typeSettings === "") {
+      channel.send(
+        CiEmbed.error(
+          `Вывожу возможные параметры для изменения`,
+          "",
+          `${Object.keys(Controllers)
+            .map((item) => "`" + item + "`")
+            .join(", ")}`
+        )
+      );
+      return;
+    }
+    if (typeSettings in Controllers) {
+      new Controllers[typeSettings as keyof typeof Controllers]().update(
+        { message, channel, guild },
+        typeSettings,
+        valueSettings
+      );
+    } else {
+      channel.send(
+        CiEmbed.error(
+          `Параметр не найден!`,
+          "",
+          `Значения параметров у гильдии не изменены.`
+        )
+      );
+      return;
     }
   }
 }

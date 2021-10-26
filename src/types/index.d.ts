@@ -1,15 +1,19 @@
-import { ReputationController } from "@core";
-import { GuildReputationSettings } from "@res";
+import { ReputationController, SparkController } from "@core";
+import { GuildChannelsSettings, GuildReputationSettings } from "@res";
 import { CommandOptions } from "discord-akairo";
 import { Guild } from "discord.js";
 
 declare module "discord.js" {
   interface GuildMember {
     reputationController: ReputationController;
+    sparkController: SparkController;
+    messagesCount: number;
     about: string;
   }
   interface Guild {
+    prefix: string;
     reputation: typeof GuildReputationSettings;
+    channelsOptions: typeof GuildChannelsSettings;
   }
 }
 declare global {
