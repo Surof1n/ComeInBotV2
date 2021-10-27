@@ -49,7 +49,7 @@ export class CommandChannel extends BaseSettings {
         if (!arr.includes(item)) arr.push(item);
         return arr;
       }, [])
-      .join(", ");
+      .join(" ");
     GuildEntity.update({ id: guild.id }, { channels: guild.channelsOptions });
     channel.send(
       CiEmbed.info(
