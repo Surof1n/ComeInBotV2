@@ -36,7 +36,12 @@ export default class MessageEvent extends Listener {
     if (checkedTrigger) {
       channel.send(this.botMessage(checkedTrigger));
     }
-    member.messagesCount += 1;
-    member.sparkController.add(1);
+    const isCommandChannel = !!guild.channelsOptions.commandChannel
+      .split(" ")
+      .includes(message.channel.id);
+    if (!isCommandChannel) {
+      member.messagesCount += 1;
+      member.sparkController.add(1);
+    }
   }
 }
