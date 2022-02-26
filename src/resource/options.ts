@@ -9,7 +9,43 @@ export const GuildReputationSettings = {
 
 export const GuildChannelsSettings = {
   commandChannel: "",
+  createVoiceChannel: "",
+  voiceEditNameChannel: "",
 };
+
+export const Categoryes = [
+  "economy",
+  "moderation",
+  "utils",
+  "settings",
+  "tempChannels",
+] as const;
+
+type CategoryType = typeof Categoryes;
+export type KeysCategory = CategoryType[number];
+
+const createMapWithCategory = <T extends readonly string[]>(listValues: T) => {
+  return Categoryes.reduce((acc, item, i) => {
+    acc.set(item, listValues[i] || "");
+    return acc;
+  }, new Map<KeysCategory, string>());
+};
+
+export const CategoryesWithTranslate = createMapWithCategory([
+  "Экономика",
+  "Модерация",
+  "Полезности",
+  "Настройки",
+  "Временные комнаты",
+]);
+
+export const CategoryesIcon = createMapWithCategory([
+  "https://i.ibb.co/4dnLdDX/CiCoin.png",
+  "https://ic.wampi.ru/2021/05/04/UtilsIcon68809f2b75b77c22.png",
+  "https://i.ibb.co/d2JNw3D/CiUtils.png",
+  "https://i.ibb.co/Tm18cwn/Category-Temp-Door4.png",
+  "https://i.ibb.co/Tm18cwn/Category-Temp-Door4.png",
+]);
 
 export enum Icons {
   error = "https://i.imgur.com/9Fds4w6.png",
@@ -61,3 +97,4 @@ export const CardSettings = {
   },
   COLORS: { black: "#fff", white: "#000" },
 };
+

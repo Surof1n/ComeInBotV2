@@ -4,17 +4,14 @@ moduleAlias.addAliases({
   "@root": __dirname,
   "@core": __dirname + `/core`,
   "@db": __dirname + `/database`,
-  "@res":  __dirname + `/resource`,
+  "@res": __dirname + `/resource`,
   "@types": __dirname + `/types`,
 });
 
-import { CiClient, CiGuild, CiGuildMember } from "@core";
+import { CiClient } from "@core";
 import { createConnection } from "typeorm";
-import { Structures } from "discord.js";
-import { emojis } from "@res";
 
-Structures.extend("GuildMember", () => CiGuildMember);
-Structures.extend("Guild", () => CiGuild);
+import { emojis } from "@res";
 
 Array.prototype.randomitem = function () {
   return this[Math.floor(Math.random() * this.length)];
@@ -40,7 +37,7 @@ async function init() {
   await createConnection()
     .then(() => console.log("Database Connect"))
     .catch((err) => console.error(err));
-  new CiClient().init();
+  await new CiClient().init();
 }
 
 init();

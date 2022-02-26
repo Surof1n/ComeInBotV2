@@ -1,4 +1,4 @@
-export * from "./client";
+export * from "./base";
 export * from "./custom";
 export * from "./errors";
 export * from "./controllers";

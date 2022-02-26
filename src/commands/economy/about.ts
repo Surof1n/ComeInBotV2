@@ -9,8 +9,7 @@ export default class GuildAboutMember extends CiCommand {
     super({
       name: "about",
       aliases: ["обомне", "осебе"],
-      category: "settings",
-      description: "Измени информацию о себе.",
+      ciCategory: "economy",
       args: [
         {
           index: 0,
@@ -21,7 +20,8 @@ export default class GuildAboutMember extends CiCommand {
           default: "",
         },
       ],
-      cidescription: {
+      ciDescription: {
+        description: "Измени информацию о себе.",
         header: "Помощь по команде: осебе",
         commandForm: ".обомне <техт?> необязателен",
         rules: "<техт?> необязателен",
@@ -38,36 +38,32 @@ export default class GuildAboutMember extends CiCommand {
         member.about = text;
         const bodyEmbed = messages.alter_profile_info.randomitem();
         channel.send(
-          CiEmbed.success(
-            "Вы сменили информацию о себе",
-            "",
-            bodyEmbed.text,
-            bodyEmbed.author
-          )
+          CiEmbed.create("success", {
+            author: "Вы сменили информацию о себе",
+            description: bodyEmbed.text,
+            footer: bodyEmbed.author,
+          })
         );
         GuildMemberEntity.update(member.id, { about: member.about });
       } else {
         member.about = "";
         const bodyEmbed = messages.alter_profile_info.randomitem();
         channel.send(
-          CiEmbed.success(
-            "Вы сбросили информацию о себе",
-            "",
-            bodyEmbed.text,
-            bodyEmbed.author
-          )
+          CiEmbed.create("success", {
+            author: "Вы сбросили информацию о себе",
+            description: bodyEmbed.text,
+            footer: bodyEmbed.author,
+          })
         );
         GuildMemberEntity.update(member.id, { about: member.about });
       }
     } else {
       channel.send(
-        CiEmbed.error(
-          "При смене информации о себе произошла ошибка!",
-          "",
-          `Введёная строка привышает ${MAX_PROFILE_LENGTH} символов.`
-        )
+        CiEmbed.create("error", {
+          author: "При смене информации о себе произошла ошибка!",
+          description: `Введёная строка привышает ${MAX_PROFILE_LENGTH} символов.`,
+        })
       );
-      return;
     }
     return;
   }

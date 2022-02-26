@@ -7,11 +7,12 @@ export default class GuildOptionsCommand extends CiCommand {
   constructor() {
     super({
       name: "guildoptions",
+      ciCategory: "settings",
       aliases: ["настройгильдию", "настроитьгильдию"],
-      category: "settings",
-      description: "Поправь или добавь настройки гильдии",
+
       userPermissions: ["ADMINISTRATOR"],
-      cidescription: {
+      ciDescription: {
+        description: "Поправь или добавь настройки гильдии",
         header: "",
         commandForm: "",
         rules: "",
@@ -46,33 +47,36 @@ export default class GuildOptionsCommand extends CiCommand {
       valueSettings,
     }: { typeSettings: string; valueSettings: string }
   ): Promise<void> {
+
     const { member, channel, guild } = message;
     if (!guild || !member) return;
     if (typeSettings === "") {
-      channel.send(
-        CiEmbed.error(
-          `Вывожу возможные параметры для изменения`,
-          "",
-          `${Object.keys(Controllers)
-            .map((item) => "`" + item + "`")
-            .join(", ")}`
+      await channel.send(
+        CiEmbed.create(
+          "info",
+          {
+            author: `Вывожу возможные параметры для изменения`,
+            description: `${Object.keys(Controllers)
+              .map((item) => "`" + item + "`")
+              .join(", ")}`,
+          },
+          false
         )
       );
       return;
     }
     if (typeSettings in Controllers) {
-      new Controllers[typeSettings as keyof typeof Controllers]().update(
+      await new Controllers[typeSettings as keyof typeof Controllers]().update(
         { message, channel, guild },
         typeSettings,
         valueSettings
       );
     } else {
-      channel.send(
-        CiEmbed.error(
-          `Параметр не найден!`,
-          "",
-          `Значения параметров у гильдии не изменены.`
-        )
+      await channel.send(
+        CiEmbed.create("error", {
+          author: `Параметр не найден!`,
+          description: `Значения параметров у гильдии не изменены.`,
+        })
       );
       return;
     }

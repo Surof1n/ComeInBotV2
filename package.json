@@ -10,18 +10,19 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@discordoo/collection": "^1.0.13",
     "@types/ws": "^7.4.7",
-    "canvas": "^2.8.0",
-    "discord-akairo": "^8.1.0",
-    "discord.js": "^12.5.3",
+    "canvas": "^2.9.0",
+    "discord-akairo": "github:discord-akairo/discord-akairo",
+    "discord.js": "github:YstNeris/discord.js-heir",
     "dotenv": "^10.0.0",
     "module-alias": "^2.2.2",
     "moment": "^2.29.1",
     "pg": "^8.7.1",
-    "ts-node": "^10.2.1",
+    "ts-node": "^10.4.0",
     "ts-node-dev": "^1.1.8",
     "typeorm": "^0.2.37",
-    "typescript": "^4.4.3"
+    "typescript": "^4.5.5"
   },
   "devDependencies": {
     "@types/module-alias": "^2.0.1",

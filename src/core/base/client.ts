@@ -1,12 +1,14 @@
-import { CiCommandHandler } from "@core";
+import { CiCommandHandler, CiGuild, CiGuildMember } from "@core";
 import {
   AkairoClient,
   CommandHandler,
   InhibitorHandler,
   ListenerHandler,
 } from "discord-akairo";
+import { Intents } from "discord.js";
 import { join } from "path";
 import { CiOptions } from "../../resource/options";
+import { CiUser, CiVoiceChannel } from "../custom";
 
 export class CiClient extends AkairoClient {
   commandHandler: CommandHandler;
@@ -14,8 +16,13 @@ export class CiClient extends AkairoClient {
   inhibitorHandler: InhibitorHandler;
   constructor() {
     super({
-      disableMentions: "everyone",
-      messageCacheMaxSize: 300,
+      structures: {
+        GuildMember: () => CiGuildMember,
+        Guild: () => CiGuild,
+        VoiceChannel: () => CiVoiceChannel,
+        User: () => CiUser,
+      },
+      intents: Object.values(Intents.FLAGS),
     });
     this.commandHandler = new CiCommandHandler(this, {
       directory: join(__dirname, "../..", "commands"),
@@ -39,9 +46,10 @@ export class CiClient extends AkairoClient {
     this.eventHandler.loadAll();
     this.commandHandler.loadAll();
   }
+
   async init() {
-    await this.login(CiOptions.token);
-    console.log("Token Connect");
+    const response = await this.login(CiOptions.token);
+    console.log("Token connected:", response);
     return this;
   }
 }

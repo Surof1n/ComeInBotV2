@@ -2,17 +2,19 @@ import { ReputationController, SparkController } from "@core";
 import { AkairoClient } from "discord-akairo";
 import { Guild, GuildMember } from "discord.js";
 import { GuildMemberEntity } from "@db";
+import { RawGuildMemberData } from "discord.js/typings/rawDataTypes";
 
 export class CiGuildMember extends GuildMember {
   reputation!: ReputationController;
   private _messagesCount!: number;
+
+  loaded = false;
   about!: string;
 
-  constructor(client: AkairoClient, data: object, guild: Guild) {
+  constructor(client: AkairoClient, data: RawGuildMemberData, guild: Guild) {
     super(client, data, guild);
-    this.initData();
   }
-  private async initData() {
+  async fetchData() {
     let dataMember = await GuildMemberEntity.findOne(this.id);
 
     if (!dataMember) {
@@ -35,12 +37,15 @@ export class CiGuildMember extends GuildMember {
 
     this.messagesCount = dataMember.messagesCount;
     this.about = dataMember.about;
+
+    this.loaded = true;
+    return this.loaded;
   }
 
   public get messagesCount() {
     return this._messagesCount;
   }
-  
+
   public set messagesCount(value: number) {
     GuildMemberEntity.update(this.id, {
       messagesCount: value,

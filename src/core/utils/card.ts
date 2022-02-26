@@ -1,7 +1,7 @@
 import {
   createCanvas,
   loadImage,
-  NodeCanvasRenderingContext2D,
+  CanvasRenderingContext2D,
   registerFont,
 } from "canvas";
 import { GuildMember, MessageAttachment } from "discord.js";
@@ -88,7 +88,9 @@ export class CiCardsProfile {
     ctx.fillText(
       member.sparkController.count.toString(),
       CardSettings.POSITIONS.wallet.sparks.x -
-        Math.floor(ctx.measureText(member.sparkController.count.toString()).width / 2) +
+        Math.floor(
+          ctx.measureText(member.sparkController.count.toString()).width / 2
+        ) +
         2,
       CardSettings.POSITIONS.wallet.sparks.y + 26
     );
@@ -128,7 +130,9 @@ export class CiCardsProfile {
     ctx.fillText(
       member.sparkController.count.toString(),
       CardSettings.POSITIONS.wallet.sparks.x -
-        Math.floor(ctx.measureText(member.sparkController.count.toString()).width / 2),
+        Math.floor(
+          ctx.measureText(member.sparkController.count.toString()).width / 2
+        ),
       CardSettings.POSITIONS.wallet.sparks.y + 26
     );
     ctx.fillText(
@@ -170,7 +174,7 @@ export class CiCardsProfile {
   }
 }
 
-function wrap(ctx: NodeCanvasRenderingContext2D, str: string) {
+function wrap(ctx: CanvasRenderingContext2D, str: string) {
   let words = str.split("");
   let line = "";
   let result: string[] = [];

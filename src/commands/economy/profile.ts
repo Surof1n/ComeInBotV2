@@ -7,9 +7,9 @@ export default class profileCommand extends CiCommand {
     super({
       name: "profile",
       aliases: ["профиль", "карточка"],
-      category: "economy",
-      description: "Вызовите свою или чужую карточку пользователя!",
-      cidescription: {
+      ciCategory: "economy",
+      ciDescription: {
+        description: "Вызовите свою или чужую карточку пользователя!",
         header: "Помощь по команде: карточка",
         commandForm: ".карточка <пользователь?>",
         rules: "<пользователь?> необязателен",
@@ -34,14 +34,16 @@ export default class profileCommand extends CiCommand {
   }
 
   async exec(
-    { channel }: Message,
+    message: Message,
     {
       targetMember,
     }: {
       targetMember: GuildMember;
     }
   ): Promise<void> {
-    channel.send(await CiCardsProfile.createDefaultCard(targetMember));
+    message.channel.send({
+      files: [await CiCardsProfile.createDefaultCard(targetMember)],
+    });
     return;
   }
 }

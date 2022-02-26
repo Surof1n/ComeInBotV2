@@ -1,14 +1,7 @@
 import { CiEmbed } from "@core";
 import { GuildEntity } from "@db";
-import {
-  DMChannel,
-  Guild,
-  GuildChannel,
-  Message,
-  NewsChannel,
-  TextChannel,
-} from "discord.js";
-import { BaseSettings } from "./BaseSettings";
+import { Guild, GuildChannel, Message, ThreadChannel } from "discord.js";
+import { BaseSettings } from "./base-settings";
 
 export class CommandChannel extends BaseSettings {
   async update(
@@ -19,7 +12,7 @@ export class CommandChannel extends BaseSettings {
     }: {
       guild: Guild;
       message: Message;
-      channel: TextChannel | DMChannel | NewsChannel;
+      channel: Message["channel"];
     },
     typeSettings: string,
     valueSettings: string
@@ -28,18 +21,17 @@ export class CommandChannel extends BaseSettings {
       const commandChannel = guild.channels.resolve(item);
       if (commandChannel) arr.push(commandChannel);
       return arr;
-    }, [] as GuildChannel[]);
+    }, [] as (GuildChannel | ThreadChannel)[]);
 
     if (!commandChannels.length) {
-      message.channel.send(
-        CiEmbed.error(
-          `Параметр ${typeSettings} не обновлён!`,
-          "",
-          `Значение параметра у гильдии осталось тем же: ${guild.channelsOptions.commandChannel
+      await message.channel.send(
+        CiEmbed.create("info", {
+          author: `Параметр ${typeSettings} не обновлён!`,
+          description: `Значение параметра у гильдии осталось тем же: ${guild.channelsOptions.commandChannel
             .split(" ")
             .map((item) => `<#${item}>`)
-            .join(" ")}`
-        )
+            .join(" ")}`,
+        })
       );
       return;
     }
@@ -50,16 +42,18 @@ export class CommandChannel extends BaseSettings {
         return arr;
       }, [])
       .join(" ");
-    GuildEntity.update({ id: guild.id }, { channels: guild.channelsOptions });
-    channel.send(
-      CiEmbed.info(
-        `Обновление параметра ${typeSettings}`,
-        "",
-        `Значение параметра у гильдии измененно: ${guild.channelsOptions.commandChannel
+    await GuildEntity.update(
+      { id: guild.id },
+      { channels: guild.channelsOptions }
+    );
+    await channel.send(
+      CiEmbed.create("info", {
+        author: `Обновление параметра ${typeSettings}`,
+        description: `Значение параметра у гильдии измененно: ${guild.channelsOptions.commandChannel
           .split(" ")
           .map((item) => `<#${item}>`)
-          .join(" ")}`
-      )
+          .join(" ")}`,
+      })
     );
   }
 }

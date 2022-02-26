@@ -6,19 +6,21 @@ import {
   GuildReputationSettings,
 } from "@res";
 import { Guild } from "discord.js";
+import { RawGuildData } from "discord.js/typings/rawDataTypes";
+import { TempChannelManager } from "./temp-channel-manager";
 
 export class CiGuild extends Guild {
+  loaded = false;
   reputation!: typeof GuildReputationSettings;
   channelsOptions!: typeof GuildChannelsSettings;
   time: CiTimeout;
   prefix = CiOptions.prefix;
-  constructor(client: CiClient, data: object) {
+  constructor(client: CiClient, data: RawGuildData) {
     super(client, data);
-    this.initData();
     this.time = new CiTimeout(this);
   }
 
-  private async initData() {
+  async fetchData() {
     let dataGuild = await GuildEntity.findOne(this.id);
 
     if (!dataGuild) {
@@ -26,10 +28,21 @@ export class CiGuild extends Guild {
       dataGuild.id = this.id;
       dataGuild.reputation = GuildReputationSettings;
       dataGuild.channels = GuildChannelsSettings;
-      dataGuild.save();
+      await dataGuild.save();
     }
 
     this.reputation = dataGuild.reputation;
     this.channelsOptions = dataGuild.channels;
+
+    this.channelManager = new TempChannelManager(
+      this,
+      dataGuild.channels.createVoiceChannel
+    );
+
+    const isInitChannel = await this.channelManager.init();
+
+    if (!isInitChannel) throw new Error("Ошибка инциализации менеджера комнат");
+    this.loaded = true;
+    return this.loaded;
   }
 }

@@ -15,7 +15,7 @@ export abstract class BaseSettings {
     }: {
       guild: Guild;
       message: Message;
-      channel: TextChannel | DMChannel | NewsChannel;
+      channel: Message["channel"];
     },
     typeSettings: string,
     valueSettings: string

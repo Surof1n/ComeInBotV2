@@ -1,89 +1,64 @@
 import { Colors, Icons } from "@res";
-import { MessageEmbedOptions } from "discord.js";
+import { ColorResolvable, MessageEmbedOptions } from "discord.js";
 import { MessageEmbed } from "discord.js";
 
+const typesEmbeds = {
+  positiveInfo: {
+    color: Colors.Orange,
+    icon: Icons.infoOrange,
+  },
+  info: {
+    color: Colors.Blue,
+    icon: Icons.info,
+  },
+  error: {
+    color: Colors.Red,
+    icon: Icons.error,
+  },
+  warn: {
+    color: Colors.Yellow,
+    icon: Icons.warning,
+  },
+  success: {
+    color: Colors.Green,
+    icon: Icons.success,
+  },
+};
 export class CiEmbed extends MessageEmbed {
+  private static types = typesEmbeds;
   constructor(data?: MessageEmbed | MessageEmbedOptions) {
     super(data);
   }
 
-  private static create(
-    author?: string,
-    header?: string,
-    description?: string,
-    footer?: string,
-    icon?: string
-  ): CiEmbed {
+  static create<T extends boolean = false>(
+    type: keyof typeof typesEmbeds | { icon: string; color: ColorResolvable },
+    {
+      author,
+      header,
+      description,
+      footer,
+    }: {
+      author?: string;
+      header?: string;
+      description?: string;
+      footer?: string;
+    },
+    isInstance?: T
+  ): RecordForEmbed<T> {
     const embed = new CiEmbed();
-    author ? embed.setAuthor(author, icon) : false;
+    const selectType = typeof type === "string" ? this.types[type] : type;
+    author
+      ? embed.setAuthor({ iconURL: selectType.icon, name: author })
+      : false;
     header ? (embed.title = header) : false;
     footer ? embed.setFooter(footer) : false;
     description ? embed.setDescription(description) : false;
-    return embed;
-  }
-
-  static error(
-    author?: string,
-    header?: string,
-    description?: string,
-    footer?: string,
-    color: number = Colors.Red,
-    icon: string = Icons.error
-  ): CiEmbed {
-    return this.create(author, header, description, footer, icon).setColor(
-      color
-    );
-  }
-
-  public static warn(
-    author?: string,
-    header?: string,
-    description?: string,
-    footer?: string,
-    color: number = Colors.Yellow,
-    icon: string = Icons.warning
-  ): CiEmbed {
-    return this.create(author, header, description, footer, icon).setColor(
-      color
-    );
-  }
-
-  public static success(
-    author?: string,
-    header?: string,
-    description?: string,
-    footer?: string,
-    color: number = Colors.Green,
-    icon: string = Icons.success
-  ): CiEmbed {
-    return this.create(author, header, description, footer, icon).setColor(
-      color
-    );
-  }
-
-  public static info(
-    author?: string,
-    header?: string,
-    description?: string,
-    footer?: string,
-    color: number = Colors.Blue,
-    icon: string = Icons.info
-  ): CiEmbed {
-    return this.create(author, header, description, footer, icon).setColor(
-      color
-    );
-  }
-
-  public static infoOrange(
-    author?: string,
-    header?: string,
-    description?: string,
-    footer?: string,
-    color: number = Colors.Orange,
-    icon: string = Icons.infoOrange
-  ): CiEmbed {
-    return this.create(author, header, description, footer, icon).setColor(
-      color
-    );
+    embed.setColor(selectType.color);
+    const result = isInstance ? embed : { embeds: [embed] };
+    return result as RecordForEmbed<T>;
   }
 }
+
+type RecordForEmbed<T extends boolean> = T extends true
+  ? CiEmbed
+  : { embeds: CiEmbed[] };
