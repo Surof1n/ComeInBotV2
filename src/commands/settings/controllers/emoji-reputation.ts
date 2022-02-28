@@ -1,11 +1,8 @@
 import { CiEmbed } from "@core";
 import { GuildEntity } from "@db";
 import {
-  DMChannel,
   Guild,
   Message,
-  NewsChannel,
-  TextChannel,
 } from "discord.js";
 import { BaseSettings } from "./base-settings";
 
