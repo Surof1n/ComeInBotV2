@@ -4,14 +4,13 @@
   "description": "",
   "main": "./src/index.ts",
   "scripts": {
-    "start": "TOKEN=Njk5MzMzMzU5OTk4MDc0OTUw.XpS28g.rQ87xjP5q5NZ80HfP7f_SIzb4fk PREFIX=. NODE_ENV=development tsnd --respawn --transpile-only --clear --trace-warnings -- src/index.ts",
+    "start": "TOKEN=Njk5MzMzMzU5OTk4MDc0OTUw.XpS28g.rQ87xjP5q5NZ80HfP7f_SIzb4fk PREFIX=. node --trace-warnings build/index.js",
     "build": "rm -rf build && tsc --build && cp -R ./src/assets ./build/"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@discordoo/collection": "^1.0.13",
-    "@types/ws": "^7.4.7",
     "canvas": "^2.9.0",
     "discord-akairo": "github:discord-akairo/discord-akairo",
     "discord.js": "github:YstNeris/discord.js-heir",
@@ -19,13 +18,14 @@
     "module-alias": "^2.2.2",
     "moment": "^2.29.1",
     "pg": "^8.7.1",
-    "ts-node": "^10.4.0",
-    "ts-node-dev": "^1.1.8",
-    "typeorm": "^0.2.37",
-    "typescript": "^4.5.5"
+    "typeorm": "^0.2.37"
   },
   "devDependencies": {
     "@types/module-alias": "^2.0.1",
-    "@types/node": "^16.9.1"
+    "@types/node": "^16.9.1",
+    "@types/ws": "^7.4.7",
+    "ts-node": "^10.4.0",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.5.5"
   }
 }
