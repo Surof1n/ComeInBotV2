@@ -1,0 +1,24 @@
+version: '3.4'
+
+services:
+  comeintrigger:
+    image: comeintrigger
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: development
+    ports:
+      - 9229:9229
+    command: ["node", "--inspect=0.0.0.0:9229", "./src/index.ts"]
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: ""
+      POSTGRES_DB: ComeInMain
+      PGDATA: /var/lib/postgresql/data/pg_data
+    ports:
+      - 5432:5432
+    volumes:
+      - pg_data:/var/lib/postgresql/data/pg_data

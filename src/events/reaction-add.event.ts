@@ -1,6 +1,5 @@
 import { CiEmbed, CiListener, ErrorReputationDate } from "@core";
 import { messages } from "@res";
-import { Listener } from "discord-akairo";
 import { MessageReaction, User } from "discord.js";
 
 export default class ReactionAddEvent extends CiListener {

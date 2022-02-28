@@ -1,9 +1,6 @@
 import {
-  DMChannel,
   Guild,
   Message,
-  NewsChannel,
-  TextChannel,
 } from "discord.js";
 
 export abstract class BaseSettings {

@@ -11,7 +11,7 @@
     "emitDecoratorMetadata": true,
     "target": "ESNext",
     "experimentalDecorators": true,
-    "sourceMap": false,
+    "sourceMap": true,
     "watch": true,
     "baseUrl": ".",
     "alwaysStrict": true,

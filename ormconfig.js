@@ -12,7 +12,7 @@ module.exports = {
   host: "localhost",
   port: 5432,
   username: "postgres",
-  password: "",
+  password: "password",
   database: "ComeInMain",
   entities: [`${entityPath}/**/*.${filter}`],
   cli: {

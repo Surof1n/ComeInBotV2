@@ -6,8 +6,6 @@ import {
   Message,
   MessageActionRow,
   MessageButton,
-  MessageReaction,
-  User,
 } from "discord.js";
 
 export default class GuildOptionsCommand extends CiCommand {

@@ -2,7 +2,6 @@ import { CiClient } from "@core";
 import { KeysCategory } from "@res";
 import { CiCommandOptions, CiDescription } from "@types";
 import { ArgumentGenerator, ArgumentOptions, Command } from "discord-akairo";
-import { Message } from "discord.js";
 
 export class CiCommand extends Command {
   public ciDescription: CiDescription;
